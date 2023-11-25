@@ -1,11 +1,22 @@
 <?php
 
+use SophieCalixto\Serenatto\Model\Product;
+
+require "vendor/autoload.php";
+
 include "src/database/connection_db.php";
-$sqlCoffe = $pdo->query("SELECT * FROM products WHERE type = 'Café' ");
-$coffeList = $sqlCoffe->fetchAll(PDO::FETCH_ASSOC);
+$sqlCoffee = $pdo->query("SELECT * FROM products WHERE type = 'Café' ");
+$coffeeList = $sqlCoffee->fetchAll(PDO::FETCH_ASSOC);
+
+$coffeeObjectList = array_map(function($coffee) {
+    return new Product($coffee['id'], $coffee['type'], $coffee['image'], $coffee['name'], $coffee['description'], $coffee['price']);
+}, $coffeeList);
 
 $sqlLunch = $pdo->query("SELECT * FROM products WHERE type = 'Almoço' ");
 $lunchList = $sqlLunch->fetchAll(PDO::FETCH_ASSOC);
+$lunchObjectList = array_map(function($lunch) {
+    return new Product($lunch['id'], $lunch['type'], $lunch['image'], $lunch['name'], $lunch['description'], $lunch['price']);
+}, $lunchList);
 
 ?>
 
@@ -40,14 +51,14 @@ $lunchList = $sqlLunch->fetchAll(PDO::FETCH_ASSOC);
             <img class="ornaments" src="img/ornaments-coffee.png" alt="ornaments">
         </div>
         <div class="container-cafe-manha-produtos">
-            <?php foreach ($coffeList as $coffe): ?>
+            <?php foreach ($coffeeObjectList as $coffee): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $coffe["image"] ?>">
+                        <img src="<?= $coffee->getImage() ?>">
                     </div>
-                    <p><?= $coffe["name"] ?></p>
-                    <p><?= $coffe["description"] ?></p>
-                    <p><?= "R$ " . $coffe["price"] ?></p>
+                    <p><?= $coffee->getName() ?></p>
+                    <p><?= $coffee->getDescription() ?></p>
+                    <p><?= "R$ " . $coffee->getPrice() ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -58,14 +69,14 @@ $lunchList = $sqlLunch->fetchAll(PDO::FETCH_ASSOC);
             <img class="ornaments" src="img/ornaments-coffee.png" alt="ornaments">
         </div>
         <div class="container-almoco-produtos">
-            <?php foreach ($lunchList as $lunch): ?>
+            <?php foreach ($lunchObjectList as $lunch): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $lunch['image'] ?>">
+                        <img src="<?= $lunch->getImage() ?>">
                     </div>
-                    <p><?= $lunch["name"] ?></p>
-                    <p><?= $lunch["description"] ?></p>
-                    <p><?= "R$ " . $lunch["price"] ?></p>
+                    <p><?= $lunch->getName() ?></p>
+                    <p><?= $lunch->getDescription() ?></p>
+                    <p><?= "R$ " . $lunch->getPrice() ?></p>
                 </div>
             <?php endforeach; ?>
         </div>

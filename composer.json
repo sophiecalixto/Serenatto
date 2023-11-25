@@ -1,0 +1,17 @@
+{
+    "name": "sophiecalixto/serenatto",
+    "description": "A serenatto project",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SophieCalixto\\Serenatto\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sophie Calixto",
+            "email": "sophiecalixto2004@gmail.com"
+        }
+    ],
+    "require": {}
+}
