@@ -1,6 +1,5 @@
 <?php
 
-use SophieCalixto\Serenatto\Model\Product;
 use SophieCalixto\Serenatto\Repository\ProductsRepository;
 
 require "vendor/autoload.php";

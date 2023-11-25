@@ -26,4 +26,13 @@ class ProductsRepository
         }, $productList);
     }
 
+    public function getAllProducts() : array
+    {
+        $sql = $this->pdo->query("SELECT * FROM products ORDER BY id");
+        $productsList = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(function($products) {
+            return new Product($products['id'], $products['type'], $products['image'], $products['name'], $products['description'], $products['price']);
+        }, $productsList);
+    }
+
 }
