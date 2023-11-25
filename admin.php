@@ -60,8 +60,9 @@ $allProductsList = $getProductList->getAllProducts();
                     <td><?= "R$ " . $product->getPrice(); ?></td>
                     <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
                     <td>
-                        <form>
-                            <input type="button" class="botao-excluir" value="Excluir">
+                        <form action="remove-product.php" method="post">
+                            <input type="hidden" name="id" value="<?= $product->getId(); ?>">
+                            <input type="submit" class="botao-excluir" value="Excluir">
                         </form>
                     </td>
                 </tr>
