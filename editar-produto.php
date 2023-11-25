@@ -15,8 +15,10 @@ if(isset($_GET['id'])) {
     $product = $productRepo->getProductById($productId);
 
     if($_POST['update_product']) {
+        $image = uniqid().$_FILES['image']['name'];
         $post = $_POST;
-        $newProduct = new Product($productId, $post['type'], 'img/logo-serenatto.png', $post['name'], $post['description'], $post['price']);
+        $newProduct = new Product($productId, $post['type'], 'img/'.$image, $post['name'], $post['description'], $post['price']);
+        move_uploaded_file($_FILES['image']['tmp_name'], 'img/'.$image);
         $productRepo->updateProduct($newProduct);
 
         header("Location: admin.php");
@@ -51,7 +53,7 @@ if(isset($_GET['id'])) {
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
 
       <label for="name">Nome</label>
       <input type="text" id="name" name="name" placeholder="Digite o nome do produto" value="<?= $product->getName(); ?>" required>

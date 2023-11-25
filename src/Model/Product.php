@@ -6,7 +6,7 @@ class Product
 {
     private ?int $id;
     private string $type;
-    private string $image;
+    private ?string $image;
     private string $name;
     private string $description;
     private string $price;
@@ -14,12 +14,12 @@ class Product
     /**
      * @param ?int $id
      * @param string $type
-     * @param string $image
+     * @param ?string $image
      * @param string $name
      * @param string $description
      * @param string $price
      */
-    public function __construct(?int $id, string $type, string $image, string $name, string $description, string $price)
+    public function __construct(?int $id, string $type, ?string $image, string $name, string $description, string $price)
     {
         $this->id = $id;
         $this->type = $type;

@@ -10,9 +10,11 @@ include "src/database/connection_db.php";
 $post = $_POST;
 
 if($_POST['register_product']) {
-    $product = new Product(null, $post['type'], 'img/logo-serenatto.png', $post['name'], $post['description'], $post['price']);
+    $image = uniqid().$_FILES['image']['name'];
+    $product = new Product(null, $post['type'], 'img/'.$image, $post['name'], $post['description'], $post['price']);
     $productRepo = new ProductsRepository($pdo);
 
+    move_uploaded_file($_FILES['image']['tmp_name'], 'img/'.$image);
     $productRepo->createProduct($product);
 
     header("Location: admin.php");
@@ -46,7 +48,7 @@ if($_POST['register_product']) {
         <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
     </section>
     <section class="container-form">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
 
             <label for="name">Nome</label>
             <input type="text" id="name" name="name" placeholder="Digite o nome do produto" required>
