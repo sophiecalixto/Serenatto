@@ -4,7 +4,7 @@ namespace SophieCalixto\Serenatto\Model;
 
 class Product
 {
-    private int $id;
+    private ?int $id;
     private string $type;
     private string $image;
     private string $name;
@@ -12,14 +12,14 @@ class Product
     private string $price;
 
     /**
-     * @param int $id
+     * @param ?int $id
      * @param string $type
      * @param string $image
      * @param string $name
      * @param string $description
      * @param string $price
      */
-    public function __construct(int $id, string $type, string $image, string $name, string $description, string $price)
+    public function __construct(?int $id, string $type, string $image, string $name, string $description, string $price)
     {
         $this->id = $id;
         $this->type = $type;

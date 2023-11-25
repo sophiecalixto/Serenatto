@@ -45,4 +45,21 @@ class ProductsRepository
         return false;
     }
 
+    public function createProduct(Product $product) : bool
+    {
+        $statement = $this->pdo->prepare("INSERT INTO products (type, name, image, description, price) VALUES (:type, :name, :image, :description, :price)");
+        if($statement->execute([
+            "type" => $product->getType(),
+            "name" => $product->getName(),
+            "image" => $product->getImage(),
+            "description" => $product->getDescription(),
+            "price" => $product->getPrice()
+        ]))
+        {
+            return true;
+        };
+
+        return false;
+    }
+
 }
