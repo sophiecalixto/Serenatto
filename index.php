@@ -1,22 +1,15 @@
 <?php
 
 use SophieCalixto\Serenatto\Model\Product;
+use SophieCalixto\Serenatto\Repository\ProductsRepository;
 
 require "vendor/autoload.php";
 
 include "src/database/connection_db.php";
-$sqlCoffee = $pdo->query("SELECT * FROM products WHERE type = 'Café' ");
-$coffeeList = $sqlCoffee->fetchAll(PDO::FETCH_ASSOC);
 
-$coffeeObjectList = array_map(function($coffee) {
-    return new Product($coffee['id'], $coffee['type'], $coffee['image'], $coffee['name'], $coffee['description'], $coffee['price']);
-}, $coffeeList);
-
-$sqlLunch = $pdo->query("SELECT * FROM products WHERE type = 'Almoço' ");
-$lunchList = $sqlLunch->fetchAll(PDO::FETCH_ASSOC);
-$lunchObjectList = array_map(function($lunch) {
-    return new Product($lunch['id'], $lunch['type'], $lunch['image'], $lunch['name'], $lunch['description'], $lunch['price']);
-}, $lunchList);
+$getProductList = new ProductsRepository($pdo);
+$coffeeObjectList = $getProductList->getProduct('Café');
+$lunchObjectList = $getProductList->getProduct('Almoço');
 
 ?>
 
