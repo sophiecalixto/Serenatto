@@ -58,7 +58,7 @@ $allProductsList = $getProductList->getAllProducts();
                     <td><?= $product->getType(); ?></td>
                     <td><?= $product->getDescription(); ?></td>
                     <td><?= "R$ " . $product->getPrice(); ?></td>
-                    <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
+                    <td><a class="botao-editar" href="editar-produto.php?id=<?= $product->getId(); ?>">Editar</a></td>
                     <td>
                         <form action="remove-product.php" method="post">
                             <input type="hidden" name="id" value="<?= $product->getId(); ?>">

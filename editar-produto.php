@@ -1,3 +1,30 @@
+<?php
+
+use SophieCalixto\Serenatto\Model\Product;
+use SophieCalixto\Serenatto\Repository\ProductsRepository;
+
+require "vendor/autoload.php";
+
+include "src/database/connection_db.php";
+
+$productRepo = new ProductsRepository($pdo);
+
+if(isset($_GET['id'])) {
+    $productId = $_GET['id'];
+
+    $product = $productRepo->getProductById($productId);
+
+    if($_POST['update_product']) {
+        $post = $_POST;
+        $newProduct = new Product($productId, $post['type'], 'img/logo-serenatto.png', $post['name'], $post['description'], $post['price']);
+        $productRepo->updateProduct($newProduct);
+
+        header("Location: admin.php");
+    }
+}
+
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -24,32 +51,32 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form action="#">
+    <form method="post">
 
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+      <label for="name">Nome</label>
+      <input type="text" id="name" name="name" placeholder="Digite o nome do produto" value="<?= $product->getName(); ?>" required>
 
       <div class="container-radio">
         <div>
-            <label for="cafe">Café</label>
-            <input type="radio" id="cafe" name="tipo" value="Café" checked>
+            <label for="coffee">Café</label>
+            <input type="radio" id="coffee" name="type" value="Café" <?= $product->getType() == "Café" ? "checked" : "" ?>>
         </div>
         <div>
-            <label for="almoco">Almoço</label>
-            <input type="radio" id="almoco" name="tipo" value="Almoço">
+            <label for="lunch">Almoço</label>
+            <input type="radio" id="lunch" name="type" value="Almoço" <?= $product->getType() == "Almoço" ? "checked" : "" ?>>
         </div>
     </div>
 
-      <label for="descricao">Descrição</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" required>
+      <label for="description">Descrição</label>
+      <input type="text" id="description" name="description" placeholder="Digite uma descrição" value="<?= $product->getDescription(); ?>" required>
 
-      <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" required>
+      <label for="price">Preço</label>
+      <input type="text" id="price" name="price" placeholder="Digite uma descrição" value="<?= $product->getPrice(); ?>" required>
 
-      <label for="imagem">Envie uma imagem do produto</label>
-      <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
+      <label for="image">Envie uma imagem do produto</label>
+      <input type="file" name="image" accept="image/*" id="image" placeholder="Envie uma imagem">
 
-      <input type="submit" name="editar" class="botao-cadastrar"  value="Editar produto"/>
+      <input type="submit" name="update_product" class="botao-cadastrar"  value="Editar produto"/>
     </form>
 
   </section>

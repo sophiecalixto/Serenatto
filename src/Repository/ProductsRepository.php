@@ -17,47 +17,72 @@ class ProductsRepository
         $this->pdo = $pdo;
     }
 
-    public function getProduct(string $productType) : array
+    public function getProduct(string $productType): array
     {
         $sql = $this->pdo->query("SELECT * FROM products WHERE type = '$productType' ");
         $productList = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(function($product) {
+        return array_map(function ($product) {
             return new Product($product['id'], $product['type'], $product['image'], $product['name'], $product['description'], $product['price']);
         }, $productList);
     }
 
-    public function getAllProducts() : array
+    public function getAllProducts(): array
     {
         $sql = $this->pdo->query("SELECT * FROM products ORDER BY id");
         $productsList = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(function($products) {
+        return array_map(function ($products) {
             return new Product($products['id'], $products['type'], $products['image'], $products['name'], $products['description'], $products['price']);
         }, $productsList);
     }
 
-    public function deleteProduct(int $id) : bool
+    public function deleteProduct(int $id): bool
     {
         $statement = $this->pdo->prepare("DELETE FROM products WHERE id = ?");
-        if($statement->execute([$id])) {
+        if ($statement->execute([$id])) {
             return true;
         }
 
         return false;
     }
 
-    public function createProduct(Product $product) : bool
+    public function createProduct(Product $product): bool
     {
         $statement = $this->pdo->prepare("INSERT INTO products (type, name, image, description, price) VALUES (:type, :name, :image, :description, :price)");
-        if($statement->execute([
+        if ($statement->execute([
             "type" => $product->getType(),
             "name" => $product->getName(),
             "image" => $product->getImage(),
             "description" => $product->getDescription(),
             "price" => $product->getPrice()
-        ]))
-        {
+        ])) {
             return true;
         };
+
+        return false;
+    }
+
+    public function getProductById(int $id): Product
+    {
+        $statement = $this->pdo->query("SELECT * FROM products WHERE id = $id");
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return new Product($result['id'], $result['type'], $result['image'], $result['name'], $result['description'], $result['price']);
+    }
+
+    public function updateProduct(Product $product): bool
+    {
+        $statement = $this->pdo->prepare("UPDATE products SET type = :type, name = :name, image = :image, description = :description, price = :price WHERE id = :id");
+        if (
+            $statement->execute([
+                "type" => $product->getType(),
+                "name" => $product->getName(),
+                "image" => $product->getImage(),
+                "description" => $product->getDescription(),
+                "price" => $product->getPrice(),
+                "id" => $product->getId()
+            ])
+        ) {
+            return true;
+        }
 
         return false;
     }
